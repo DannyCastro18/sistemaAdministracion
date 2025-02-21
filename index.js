@@ -1,5 +1,6 @@
 const express = require('express');
 const sequelize = require('./config/database');
+const cors = require("cors");
 
 const usuarioR = require('./routes/usuarioRoutes');
 const propietarioR = require('./routes/propietarioRoutes');
@@ -9,6 +10,12 @@ const apartamentoR = require('./routes/apartamentoRoutes');
 
 require('dotenv').config();
 const app = express();
+
+app.use(cors({
+  origin: "http://localhost:3000",  
+  methods: ["GET", "POST", "PUT", "DELETE"],  
+  credentials: true  
+}));
 
 const PORT = process.env.PORT || 5000;
 
