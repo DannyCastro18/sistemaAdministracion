@@ -28,6 +28,7 @@ const actualizarUsuario = async (req,res) => {
         }
         res.json({Mensaje: 'Usuario actualizado correctamente'});
     }catch(error){
+        console.log(error);
         res.status(400).json({Mensaje: 'Error al actualizar el usuario'});
     }
 };
