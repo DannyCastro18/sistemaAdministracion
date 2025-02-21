@@ -13,7 +13,7 @@ const Usuario = config.define('Usuario', {
         type: DataTypes.STRING(80),
         allowNull: false,
         unique: true
-    },
+    },//agregar correo
     password:{
         type: DataTypes.STRING(100),
         allowNull: false
