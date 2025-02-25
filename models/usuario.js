@@ -13,7 +13,7 @@ const Usuario = config.define('Usuario', {
         type: DataTypes.STRING(80),
         allowNull: false,
         unique: true
-    },//agregar correo
+    },
     password:{
         type: DataTypes.STRING(100),
         allowNull: false
@@ -25,6 +25,11 @@ const Usuario = config.define('Usuario', {
     estado: {
         type: DataTypes.ENUM('activo','inactivo'),
         allowNull: false,
+    },
+    correo: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        unique: true
     },
     // createdAt: {
     //     type: DataTypes.DATE,
