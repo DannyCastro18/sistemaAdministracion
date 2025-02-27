@@ -14,6 +14,7 @@ const obtenerPagos = async (req,res) => {
 
 //tener en cuenta que si el monto es negativo se debe rechazar el pago
 const registrarPago = async (req,res) => { 
+    console.log(req.body)
     try{
         const {monto} = req.body;
         if (monto < 0){

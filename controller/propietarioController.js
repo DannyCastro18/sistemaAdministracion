@@ -54,12 +54,10 @@ const verPropietarios = async (req,res) => {
 // };
 
 const registrarPropietario = async (req,res) => {
+    console.log(req.body);
     try{
-
         const {admin_id} = req.body;
-
         const admin = await Usuario.findOne({where: {id: admin_id, rol: 'administrador'}});
-
         if (!admin) {
             return res.status(404).json({Mensaje: 'Administrador no encontrado'});
         }
@@ -72,6 +70,7 @@ const registrarPropietario = async (req,res) => {
         res.status(201).json(newPropietario);
     } catch(error){
         res.status(400).json({ Mensaje: 'Error al crear el propietario', error: error.message});
+        console.error(error)
     }
 };
 
