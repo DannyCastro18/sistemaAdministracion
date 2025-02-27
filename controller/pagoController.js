@@ -27,4 +27,19 @@ const registrarPago = async (req,res) => {
     }
 };
 
-module.exports = {registrarPago,obtenerPagos};
+const editarPago = async (req,res) => {
+    try{
+        const {id} = req.params;
+        const pago = await Pago.findByPk(id);
+        if (!pago){
+            return res.status(404).json({Mensaje: 'El pago no existe'});
+        }
+        await pago.update(req.body);
+        res.json(pago);
+    }catch(error){
+        console.error(error);
+        res.status(500).json({Mensaje: 'Error al editar el pago'});
+    }
+}
+
+module.exports = {registrarPago,obtenerPagos,editarPago};

@@ -27,6 +27,7 @@ app.use('/api/visitante', visitanteR);
 app.use('/api/pago', pagoR);
 app.use('/api/apartamento', apartamentoR);
 
+
 app.get('/', (req, res) => {
   res.send('¡API Villa del Sol funcionando correctamente!');
 });
