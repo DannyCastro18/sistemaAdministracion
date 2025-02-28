@@ -41,7 +41,7 @@ const Visitante = config.define('Visitante',{
     },
 },{
     tableName: 'visitante',
-    timestamps: true,
+    timestamps: false,
 });
 
 Apartamento.hasMany(Visitante, {foreignKey: 'apartamento_id'});
