@@ -30,26 +30,21 @@ const asignarApartamento = async (req, res) => {
     try {
         const { propietario_id, numero } = req.body;
 
-        // Verificar si el número de apartamento ya existe
         const apartamentoExistente = await Apartamento.findOne({ where: { numero } });
         if (apartamentoExistente) {
             return res.status(400).json({ Mensaje: 'El número de apartamento ya está en uso' });
         }
 
-        // Buscar un apartamento disponible sin propietario
         const apartamento = await Apartamento.findOne({ where: { propietario_id: null } });
 
         if (!apartamento) {
             return res.status(404).json({ Mensaje: 'No hay apartamentos disponibles' });
         }
 
-        // Verificar si el propietario existe
         const propietario = await Propietario.findByPk(propietario_id);
         if (!propietario) {
             return res.status(404).json({ Mensaje: 'Propietario no encontrado' });
         }
-
-        // Actualizar el apartamento con el propietario y nuevo número
         await apartamento.update({ propietario_id, numero });
 
         res.status(200).json({

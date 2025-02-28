@@ -35,6 +35,7 @@ const registrarVisitante = async (req,res) => {
         res.status(201).json(newVisitante);
 
     }catch(error){
+        console.log(error)
         res.status(400).json({Mensaje: 'Error al registrar el visitante' , error: error.message});
     }
 };
@@ -53,4 +54,18 @@ const actualizarVisitante = async (req,res) => {
     }
 };
 
-module.exports = {registrarVisitante,verVisitantes,actualizarVisitante};
+const eliminarVisitante = async (req,res) => {
+    try{
+        const {id} = req.params;
+        const visitante = await Visitante.findByPk(id);
+        if(!visitante){
+            return res.status(404).json({Mensaje: 'Visitante no encontrado'});
+        }
+        await visitante.destroy();
+        res.json({Mensaje: 'Visitante eliminado correctamente'});
+    }catch(error){
+        res.status(400).json({Mensaje: 'Error al eliminar el visitante'});
+    }
+};
+
+module.exports = {registrarVisitante,verVisitantes,actualizarVisitante,eliminarVisitante};
