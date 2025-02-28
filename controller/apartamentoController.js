@@ -13,43 +13,40 @@ const verApartamentos = async (req,res) => {
 
 const registrarApartamento = async (req,res) => {
     try{
-        const {numero } = req.body;
-    if (!numero){
+        console.log("Datos recibidos en el backend:", req.body);
+        const { numero, propietario_id } = req.body;
+    if (!numero || !propietario_id) {
         return res.status(400).json({Mensaje: 'El número del apartamento es requerido'});
     }
-    const newapartamento = await Apartamento.create({numero});
-    res.status(201).json({Mensaje: 'Apartamento registrado correctamente', apartamento: newapartamento});
+    const newApartamento = await Apartamento.create({ numero, propietario_id });
+    res.status(201).json({Mensaje: 'Apartamento registrado correctamente', apartamento: newApartamento});
     } catch (error){
         console.error(error);
         res.status(400).json({Mensaje: 'Error al registrar apartamento'});
     }
 };
 
-
 const asignarApartamento = async (req, res) => {
     try {
+        console.log("Datos recibidos en el backend:", req.body);
         const { propietario_id, numero } = req.body;
 
-        // Verificar si el número de apartamento ya existe
         const apartamentoExistente = await Apartamento.findOne({ where: { numero } });
         if (apartamentoExistente) {
             return res.status(400).json({ Mensaje: 'El número de apartamento ya está en uso' });
         }
 
-        // Buscar un apartamento disponible sin propietario
         const apartamento = await Apartamento.findOne({ where: { propietario_id: null } });
 
         if (!apartamento) {
             return res.status(404).json({ Mensaje: 'No hay apartamentos disponibles' });
         }
 
-        // Verificar si el propietario existe
         const propietario = await Propietario.findByPk(propietario_id);
         if (!propietario) {
             return res.status(404).json({ Mensaje: 'Propietario no encontrado' });
         }
 
-        // Actualizar el apartamento con el propietario y nuevo número
         await apartamento.update({ propietario_id, numero });
 
         res.status(200).json({
@@ -66,5 +63,23 @@ const asignarApartamento = async (req, res) => {
     }
 };
 
+const editarApartamento = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { numero, propietario_id } = req.body;
 
-module.exports = {registrarApartamento, asignarApartamento,verApartamentos};
+        const apartamento = await Apartamento.findByPk(id);
+        if (!apartamento) {
+            return res.status(404).json({ Mensaje: 'Apartamento no encontrado' });
+        }
+
+        await apartamento.update({ numero, propietario_id });
+
+        res.json({ Mensaje: 'Apartamento actualizado correctamente', apartamento });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ Mensaje: 'Error al editar apartamento' });
+    }
+}
+
+module.exports = {registrarApartamento, asignarApartamento,verApartamentos, editarApartamento};
